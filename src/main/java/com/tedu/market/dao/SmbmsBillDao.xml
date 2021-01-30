@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace是命令空間  dao接口名-->
+<mapper namespace="com.tedu.market.dao.SmbmsBillDao">
+
+<!--    使用动态是sql完成订单的查询 trim+if-->
+    <select id="getBillByBill" resultType="com.tedu.market.pojo.SmbmsBill">
+        SELECT * from smbms_bill
+        <trim prefix="where" prefixOverrides="and|or">
+        <if test="productName!=null&amp;&amp;productName=''">
+            and productName like CONCAT('%',#{productName},'%')
+        </if>
+        <if test="providerId!=0">
+            and providerId=#{providerId}
+        </if>
+        <if test="isPayment!=0">
+            and isPayment=#{isPayment}
+        </if>
+        </trim>
+
+    </select>
+    <select id="getBillBySise" resultType="com.tedu.market.pojo.SmbmsBill">
+            select* from smbms_bill limit #{no},#{size}
+    </select>
+
+</mapper>
+

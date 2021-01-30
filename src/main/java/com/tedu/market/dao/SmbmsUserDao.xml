@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace是命令空間  dao接口名-->
+<mapper namespace="com.tedu.market.dao.SmbmsUserDao">
+
+    <delete id="deleteById">
+        DELETE FROM smbms_user WHERE id = #{id}
+    </delete>
+
+    <update id="updateByUser" parameterType="com.tedu.market.pojo.SmbmsUser">
+    UPDATE smbms_user
+    <set>
+        <if test="userName !=null &amp;&amp; userName !=''">userName = #{userName}</if>
+        <if test="userCode !=  null&amp;&amp; userCode!=''">
+            userCode = #{userCode}></if>
+        <if test="userPassword != null">userPassword=#{userPassword},</if>
+        <if test="gender != null">gender=#{gender},</if>
+        <if test="birthday != null">birthday=#{birthday},</if>
+        <if test="phone != null">phone=#{phone},</if>
+        <if test="address != null">address=#{address},</if>
+        <if test="userRole != null">userRole=#{userRole},</if>
+        <if test="modifyBy != null">modifyBy=#{modifyBy},</if>
+        <if test="modifyDate != null">modifyDate=#{modifyDate}</if>
+
+    </set>
+    WHERE id = #{id}
+    </update>
+
+    <insert id="addUser" parameterType="com.tedu.market.pojo.SmbmsUser">
+        INSERT INTO smbms_user(userCode,userName,userPassword,gender,birthday,phone,
+        address,userRole,createdBy,creationDate,modifyBy,modifyDate)
+        VALUES
+         (#{userCode},#{userName},#{userPassword},#{gender},#{birthday},#{phone},#{address},#{userRole},#{createdBy},
+         #{creationDate},#{modifyBy},#{modifyDate})
+    </insert>
+
+    <select id="getAllUser" resultMap="userrole">
+          SELECT * FROM smbms_user INNER JOIN smbms_role ON smbms_user.userRole = smbms_role.id
+    </select>
+
+    <select id="getUserByUser" resultType="com.tedu.market.pojo.SmbmsUser"
+            parameterType="com.tedu.market.pojo.SmbmsUser">
+ SELECT * FROM smbms_user
+        <where>
+            <if test="userCode !=null &amp;&amp; userCode!= ''">
+                and userCode = #{userCode}
+            </if>
+            <if test="userName !=null &amp;&amp; userName!= ''">
+                and userName = #{userName}
+            </if>
+            <if test="userPassword !=null &amp;&amp; userPassword!= ''">
+                and userPassword = #{userPassword}
+            </if>
+            <if test="gender !=null &amp;&amp; gender!= ''">
+                and gender = #{gender}
+            </if>
+            <if test="userRole !=null &amp;&amp; userRole!= ''">
+                and userRole = #{userRole}
+            </if>
+        </where>
+    </select>
+
+
+    <resultMap id="userrole" type="com.tedu.market.pojo.SmbmsUser" autoMapping="true">
+        <id property="id" column="id"></id>
+        <association property="role" javaType="com.tedu.market.pojo.SmbmsRole" autoMapping="true">
+            <result property="id" column="id"></result>
+            <result property="roleCode" column="roleCode"></result>
+            <result property="roleName" column="roleName"></result>
+            <result property="createdBy" column="createdBy"></result>
+            <result property="creationDate" column="creationDate"></result>
+            <result property="modifyBy" column="modifyBy"></result>
+            <result property="modifyDate" column="modifyDate"></result>
+        </association>
+    </resultMap>
+
+    <select id="getUserByName" resultMap="userrole">
+        SELECT * FROM smbms_user INNER JOIN smbms_role ON smbms_user.userRole = smbms_role.id
+        WHERE userName = #{name}
+    </select>
+
+    <select id="getRoleListByNameRole" resultMap="userrole">
+         SELECT * FROM smbms_user
+         <where>
+             <if test="name != null &amp;&amp; name != ''">
+                 and userName LIKE CONCAT('%',#{name},'%')
+             </if>
+             <if test="userRole !=null &amp;&amp; userRole !=''">
+                 AND userRole =#{userRole}
+             </if>
+         </where>
+    </select>
+
+
+    <select id="getUserById" resultMap="userrole">
+  SELECT * FROM smbms_user INNER JOIN smbms_role ON smbms_user.userRole = smbms_role.id
+  where smbms_user.id = #{id}
+    </select>
+
+</mapper>
+

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace是命令空間  dao接口名-->
+<mapper namespace="com.tedu.market.dao.SmbmsProviderDao">
+
+
+    <resultMap id="providerMap" type="com.tedu.market.pojo.SmbmsProvider">
+
+
+        <id property="id" column="id"></id>
+        <result property="proCode" column="proCode"></result>
+        <result property="proName" column="proName"></result>
+        <result property="proDesc" column="proDesc"></result>
+        <result property="proContact" column="proContact"></result>
+        <result property="proPhone" column="proPhone"></result>
+        <result property="proAddress" column="proAddress"></result>
+        <result property="proFax" column="proFax"></result>
+        <result property="createdBy" column="createdBy"></result>
+        <result property="creationDate" column="creationDate"></result>
+        <result property="modifyDate" column="modifyDate"></result>
+        <result property="modifyBy" column="modifyBy"></result>
+
+
+        <collection property="bills" ofType="com.tedu.market.pojo.SmbmsBill" autoMapping="true">
+            <id property="id" column="smbms_bill.providerId"></id>
+            <result property="billCode" column="billCode"></result>
+
+        </collection>
+        
+    </resultMap>
+
+    <select id="getProviderById" resultMap="providerMap">
+        SELECT * FROM smbms_provider right join  smbms_bill
+        ON
+         smbms_provider.id = smbms_bill.providerId
+         WHERE
+          smbms_provider.id = #{id}
+    </select>
+    
+    <select id="getProviderByNOSize"  resultMap="providerMap">
+        SELECT * FROM smbms_provider  LIMIT #{no},#{size}
+    </select>
+
+    <select id="getCount" resultType="int">
+        SELECT COUNT(id) FROM smbms_provider
+    </select>
+
+    <select id="getProviderByProvider" parameterType="com.tedu.market.pojo.SmbmsProvider"
+            resultType="com.tedu.market.pojo.SmbmsProvider">
+SELECT * FROM smbms_provider
+<where>
+    <if test="proCode!=null&amp;&amp;proCode!=''">
+        and proCode LIKE CONCAT('%',#{proCode},'%')
+    </if>
+    <if test="proName!=null&amp;&amp;proName!=''">
+        and proName LIKE CONCAT('%',#{proName},'%')
+    </if>
+</where>
+    </select>
+
+    <select id="getCountByProvider" parameterType="com.tedu.market.pojo.SmbmsProvider" resultType="int">
+        SELECT count(*) FROM smbms_provider
+        <where>
+            <if test="proCode!=null&amp;&amp;proCode!=''">
+                and proCode LIKE CONCAT('%',#{proCode},'%')
+            </if>
+            <if test="proName!=null&amp;&amp;proName!=''">
+                and proName LIKE CONCAT('%',#{proName},'%')
+            </if>
+        </where>
+
+    </select>
+    
+    <delete id="deleteById" parameterType="int">
+        delete from smbms_provider where id=111
+    </delete>
+</mapper>
+

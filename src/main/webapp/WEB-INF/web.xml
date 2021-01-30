@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<welcome-file-list>
+<!--		访问的是更目录，而不是文件时，进入login.jsp页面-->
+		<welcome-file>login.jsp</welcome-file>
+		</welcome-file-list>
+
+<!--	绑定servlet的请求-->
+<servlet>
+	<servlet-name>userServelt</servlet-name>
+	<servlet-class>com.tedu.market.web.UserHttpServlet</servlet-class>
+</servlet>
+	<servlet-mapping>
+		<servlet-name>userServelt</servlet-name>
+		<url-pattern>/user/*</url-pattern>
+	</servlet-mapping>
+<!--创建供应商的  servlet-->
+	<servlet>
+		<servlet-name>provider</servlet-name>
+		<servlet-class>com.tedu.market.web.ProviderServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>provider</servlet-name>
+		<url-pattern>/provider/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>bill</servlet-name>
+		<servlet-class>com.tedu.market.web.BillServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>bill</servlet-name>
+		<url-pattern>/bill/*</url-pattern>
+	</servlet-mapping>
+
+</web-app>

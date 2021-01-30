@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace是命令空間  dao接口名-->
+<mapper namespace="com.tedu.market.dao.SmbmsRoleDao">
+<!--定义映射关系 id:名称；type：指向实体类 collection：引用的集合  oftype：集合中实体类-->
+ <resultMap id="roleMap" type="com.tedu.market.pojo.SmbmsRole" autoMapping="true">
+<collection property="users" ofType="com.tedu.market.pojo.SmbmsUser" autoMapping="true">
+ <id property="id" column="id1"></id>
+ <result property="id" column="id"></result>
+ <result property="userCode" column="userCode"></result>
+ <result property="userName" column="userName"></result>
+ <result property="userPassword" column="userPassword"></result>
+ <result property="gender" column="gender"></result>
+ <result property="birthday" column="birthday"></result>
+ <result property="phone" column="phone"></result>
+ <result property="address" column="address"></result>
+</collection>
+
+ </resultMap>
+
+<select id="getRoleById" resultMap="roleMap">
+SELECT * FROM smbms_role
+RIGHT JOIN smbms_user
+on smbms_role.id = smbms_user.userRole
+WHERE smbms_role.id  =#{id}
+</select>
+
+   <select id="getRoleListByName" resultType="com.tedu.market.pojo.SmbmsRole">
+     SELECT * FROM smbms_role
+     <if test="roleName!=null">
+      where roleName = #{roleName}
+     </if>
+   </select>
+
+    <select id="getAllRoleListe" resultType="com.tedu.market.pojo.SmbmsRole">
+        SELECT * FROM smbms_role
+    </select>
+
+
+</mapper>
+
